@@ -47,7 +47,7 @@
 **知识点/面试题** : (必看:+1: )
 
 1. **[Java 基础知识](docs/java/basis/Java基础知识.md)**
-2. **[Java 基础知识疑难点/易错点](docs/java/basis/Java基础知识疑难点.md)**
+2. [Java 基础知识疑难点/易错点](docs/java/basis/Java基础知识疑难点.md)
 
 **重要知识点详解：**
 
@@ -61,6 +61,7 @@
 
 1. **[Java 容器常见问题总结](docs/java/collection/Java集合框架常见面试题.md)** (必看 :+1:)
 2. **源码分析** ：[ArrayList 源码+扩容机制分析](docs/java/collection/ArrayList源码+扩容机制分析.md) 、[LinkedList 源码](docs/java/collection/LinkedList源码分析.md) 、[HashMap(JDK1.8)源码+底层数据结构分析](<docs/java/collection/HashMap(JDK1.8)源码+底层数据结构分析.md>) 、[ConcurrentHashMap 源码+底层数据结构分析](docs/java/collection/ConcurrentHashMap源码+底层数据结构分析.md)
+3. [Java 容器使用注意事项总结](docs/java/collection/Java集合使用注意事项总结.md)
 
 ### 并发
 
@@ -76,6 +77,7 @@
 3. [并发容器总结](docs/java/multi-thread/并发容器总结.md)
 4. [JUC 中的 Atomic 原子类总结](docs/java/multi-thread/Atomic原子类总结.md)
 5. [AQS 原理以及 AQS 同步组件总结](docs/java/multi-thread/AQS原理以及AQS同步组件总结.md)
+6. [CompletableFuture入门](docs/java/multi-thread/CompletableFuture入门.md)
 
 ### JVM (必看 :+1:)
 
@@ -169,6 +171,10 @@ JVM 这部分内容主要参考 [JVM 虚拟机规范-Java8 ](https://docs.oracle
 2. [Redis 常见问题总结](docs/database/Redis/redis-all.md)
 3. [面试/工作必备！3种常用的缓存读写策略！](docs/database/Redis/3种常用的缓存读写策略.md)
 
+## 搜索引擎
+
+用于提高搜索效率，功能和浏览器搜索引擎类似。比较常见的搜索引擎是 Elasticsearch（推荐） 和 Solr。
+
 ## 系统设计
 
 ### 系统设计必备基础
@@ -254,10 +260,6 @@ CAP 也就是 Consistency（一致性）、Availability（可用性）、Partiti
 
 **Paxos 算法**诞生于 1990 年，这是一种解决分布式系统一致性的经典算法 。但是，由于 Paxos 算法非常难以理解和实现，不断有人尝试简化这一算法。到了2013 年才诞生了一个比 Paxos 算法更易理解和实现的分布式一致性算法—**Raft 算法**。
 
-#### 搜索引擎
-
-用于提高搜索效率，功能和浏览器搜索引擎类似。比较常见的搜索引擎是 Elasticsearch（推荐） 和 Solr。
-
 #### RPC
 
 RPC 让调用远程服务调用像调用本地方法那样简单。
@@ -276,7 +278,7 @@ Dubbo 是一款国产的 RPC 框架，由阿里开源。相关阅读：
 
 #### 分布式 id
 
-在复杂分布式系统中，往往需要对大量的数据和消息进行唯一标识。比如数据量太大之后，往往需要对进行对数据进行分库分表，分库分表后需要有一个唯一 ID 来标识一条数据或消息，数据库的自增 ID 显然不能满足需求。相关阅读：[为什么要分布式 id ？分布式 id 生成方案有哪些？](docs/system-design/micro-service/分布式id生成方案总结.md)
+在复杂分布式系统中，往往需要对大量的数据和消息进行唯一标识。比如数据量太大之后，往往需要对数据进行分库分表，分库分表后需要有一个唯一 ID 来标识一条数据或消息，数据库的自增 ID 显然不能满足需求。相关阅读：[为什么要分布式 id ？分布式 id 生成方案有哪些？](docs/system-design/micro-service/分布式id生成方案总结.md)
 
 #### 分布式事务
 
@@ -358,6 +360,24 @@ Dubbo 是一款国产的 RPC 框架，由阿里开源。相关阅读：
 **一旦用户的请求超过某个时间得不到响应就结束此次请求并抛出异常。** 如果不进行超时设置可能会导致请求响应速度慢，甚至导致请求堆积进而让系统无法在处理请求。
 
 另外，重试的次数一般设为 3 次，再多次的重试没有好处，反而会加重服务器压力（部分场景使用失败重试机制会不太适合）。
+
+#### 灾备设计
+
+**灾备**  = 容灾+备份。
+
+- **备份** ： 将系统所产生的的所有重要数据多备份几份。
+- **容灾** ： 在异地建立两个完全相同的系统。当某个地方的系统突然挂掉，整个应用系统可以切换到另一个，这样系统就可以正常提供服务了。
+
+#### 异地多活
+
+异地多活描述的是将服务部署在异地并且服务同时对外提供服务。和传统的灾备设计的最主要区别在于“多活”，即所有站点都是同时在对外提供服务的。
+
+异地多活是为了应对突发状况比如火灾、地震等自然或者认为灾害。
+
+相关阅读：
+
+- [四步构建异地多活](https://mp.weixin.qq.com/s/hMD-IS__4JE5_nQhYPYSTg)
+- [《从零开始学架构》— 28 | 业务高可用的保障：异地多活架构](http://gk.link/a/10pKZ)
 
 ### 大型网站架构
 
